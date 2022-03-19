@@ -4,5 +4,5 @@ import "context"
 
 // Client handles subscriptions to the broker
 type Client interface {
-	Subscribe(ctx context.Context, tradingPairs []string, message chan interface{}) error
+	Subscribe(ctx context.Context, tradingPairs []string, message chan interface{}, err chan error)
 }

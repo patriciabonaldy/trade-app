@@ -2,7 +2,14 @@ package coinbase
 
 import "time"
 
-// Message struct represents a Ticker message of coinbase websocket response
+// Request struct represents a Ticker channel websocket request
+type Request struct {
+	Type       string   `json:"type"`
+	ProductIds []string `json:"product_ids"`
+	Channels   []string `json:"channels"`
+}
+
+// Message struct represents a Ticker channel websocket response
 type Message struct {
 	Type      string    `json:"type"`
 	Sequence  int       `json:"sequence"`
@@ -19,4 +26,5 @@ type Message struct {
 	Time      time.Time `json:"time"`
 	TradeID   int       `json:"trade_id"`
 	LastSize  string    `json:"last_size"`
+	Message   string    `json:"message,omitempty"`
 }

@@ -8,7 +8,7 @@ APP_NAME=zero
 VERSION := 0.0.1
 
 .PHONY: all
-all: check_tools ensure-deps fmt imports linter
+all: check_tools ensure-deps fmt imports linter test
 
 .PHONY: check_tools
 check_tools:
@@ -40,3 +40,17 @@ imports:
 linter:
 	@echo "=> Executing golangci-lint$(if $(FLAGS), with flags: $(FLAGS))"
 	@golangci-lint run ./... $(FLAGS)
+
+.PHONY: test
+test:
+	@echo "=> Running tests"
+	@go test ./... -covermode=atomic -coverpkg=./... -count=1 -race
+
+.PHONY: coverage
+coverage:
+	@echo "=> Running tests and generating report"
+	@go test ./... -covermode=atomic -coverprofile=/tmp/coverage.out -coverpkg=./... -count=1
+	@go tool cover -html=/tmp/coverage.out
+
+.PHONY: test-cover
+test-cover: service-up coverage service-down
