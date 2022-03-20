@@ -64,6 +64,30 @@ func Test_service_CalculateVwpa(t *testing.T) {
 			pairs:      []string{"ETH-USD"},
 			repository: memory.NewRepository,
 		},
+		{
+			name:  "repo data is full",
+			pairs: []string{"ETH-USD"},
+			repository: func() storage.Repository {
+				repo := memory.NewRepository()
+				data := []model.Data{
+					{
+						Price: 10,
+						Size:  5,
+					},
+					{
+						Price: 20,
+						Size:  10,
+					},
+				}
+
+				repo.ReplaceData(context.Background(), "ETH-USD", data)
+				for _, d := range data {
+					repo.SaveVwpa(context.Background(), "ETH-USD", d)
+				}
+
+				return repo
+			},
+		},
 	}
 
 	for _, tt := range tests {
