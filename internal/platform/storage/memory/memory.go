@@ -2,13 +2,12 @@ package memory
 
 import (
 	"context"
+	"encoding/json"
 	"sync"
 
 	"github.com/patriciabonaldy/zero/internal/model"
 	"github.com/patriciabonaldy/zero/internal/platform/storage"
 )
-
-const defaultMaxSize = 200
 
 // Memory is a memory Repository implementation.
 type Memory struct {
@@ -53,6 +52,14 @@ func (m *Memory) SaveData(ctx context.Context, code string, data model.Data) {
 	}
 }
 
+// ReplaceData implements the storage.Repository interface.
+func (m *Memory) ReplaceData(ctx context.Context, code string, data []model.Data) {
+	defer m.mux.Unlock()
+
+	m.mux.Lock()
+	m.Data[code] = data
+}
+
 // GetVwpa implements the storage.Repository interface.
 func (m *Memory) GetVwpa(ctx context.Context, code string) (model.VWpaData, error) {
 	defer m.mux.Unlock()
@@ -66,18 +73,41 @@ func (m *Memory) GetVwpa(ctx context.Context, code string) (model.VWpaData, erro
 	return vwpaData, nil
 }
 
+// GetMapVWpa implements the storage.Repository interface.
+func (m *Memory) GetMapVWpa(ctx context.Context) ([]byte, error) {
+	defer m.mux.Unlock()
+
+	m.mux.Lock()
+
+	return json.Marshal(m.VwpaData)
+}
+
 // SaveVwpa implements the storage.Repository interface.
-func (m *Memory) SaveVwpa(ctx context.Context, code string, data model.VWpaData) {
+func (m *Memory) SaveVwpa(ctx context.Context, code string, data model.Data) {
 	defer m.mux.Unlock()
 
 	m.mux.Lock()
 	wpa, ok := m.VwpaData[code]
 	if ok {
 		wpa.Price += data.Price
-		wpa.Quantity += data.Quantity
+		wpa.Size += data.Size
 		wpa.CalculateVwpa()
 		m.VwpaData[code] = wpa
 	} else {
-		m.VwpaData[code] = data
+		wpa = model.VWpaData{
+			Price: data.Price,
+			Size:  data.Size,
+		}
+		wpa.CalculateVwpa()
+
+		m.VwpaData[code] = wpa
 	}
+}
+
+// UpdateVwpa implements the storage.Repository interface.
+func (m *Memory) UpdateVwpa(ctx context.Context, code string, wpa model.VWpaData) {
+	defer m.mux.Unlock()
+
+	m.mux.Lock()
+	m.VwpaData[code] = wpa
 }

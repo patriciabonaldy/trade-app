@@ -27,8 +27,8 @@ func TestMemory_GetData(t *testing.T) {
 			code: "BTC-USD",
 			want: []model.Data{
 				{
-					Price:    10,
-					Quantity: 5,
+					Price: 10,
+					Size:  5,
 				},
 			},
 		},
@@ -36,8 +36,8 @@ func TestMemory_GetData(t *testing.T) {
 
 	m := NewRepository()
 	m.SaveData(context.Background(), "BTC-USD", model.Data{
-		Price:    10,
-		Quantity: 5,
+		Price: 10,
+		Size:  5,
 	})
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -68,18 +68,17 @@ func TestMemory_GetVwpa(t *testing.T) {
 			name: "Found",
 			code: "BTC-USD",
 			want: model.VWpaData{
-				Price:    10,
-				Quantity: 5,
-				Vwpa:     2,
+				Price: 10,
+				Size:  5,
+				Vwpa:  2,
 			},
 		},
 	}
 
 	m := NewRepository()
-	m.SaveVwpa(context.Background(), "BTC-USD", model.VWpaData{
-		Price:    10,
-		Quantity: 5,
-		Vwpa:     2,
+	m.SaveVwpa(context.Background(), "BTC-USD", model.Data{
+		Price: 10,
+		Size:  5,
 	})
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -96,9 +95,9 @@ func TestMemory_GetVwpa(t *testing.T) {
 }
 
 func TestMemory_SaveVwpa(t *testing.T) {
-	data := model.VWpaData{
-		Price:    10,
-		Quantity: 5,
+	data := model.Data{
+		Price: 10,
+		Size:  5,
 	}
 
 	m := NewRepository()
@@ -109,9 +108,9 @@ func TestMemory_SaveVwpa(t *testing.T) {
 	require.NoError(t, err)
 
 	expected := model.VWpaData{
-		Price:    20,
-		Quantity: 10,
-		Vwpa:     2,
+		Price: 20,
+		Size:  10,
+		Vwpa:  2,
 	}
 	assert.Equal(t, expected, got)
 }

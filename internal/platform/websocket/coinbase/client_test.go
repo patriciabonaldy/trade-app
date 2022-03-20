@@ -48,7 +48,7 @@ func (m MockSocket) ReadMessage() (messageType int, p []byte, err error) {
 		return 0, []byte("{\"type\":\"error\", \"message\":\"unknown error\"}\n"), nil
 	}
 
-	return 0, []byte("{\"type\":\"subscriptions\",\"sequence\":0,\"product_id\":\"\",\"price\":\"\",\"open_24h\":\"\",\"volume_24h\":\"\",\"low_24h\":\"\",\"high_24h\":\"\",\"volume_30d\":\"\",\"best_bid\":\"\",\"best_ask\":\"\",\"side\":\"\",\"time\":\"0001-01-01T00:00:00Z\",\"trade_id\":0,\"last_size\":\"\"}\n"), nil
+	return 0, []byte("{\"type\":\"match\",\"sequence\":0,\"product_id\":\"\",\"price\":\"\",\"open_24h\":\"\",\"volume_24h\":\"\",\"low_24h\":\"\",\"high_24h\":\"\",\"volume_30d\":\"\",\"best_bid\":\"\",\"best_ask\":\"\",\"side\":\"\",\"time\":\"0001-01-01T00:00:00Z\",\"trade_id\":0,\"last_size\":\"\"}\n"), nil
 }
 
 var _ socket = &MockSocket{}
@@ -81,7 +81,7 @@ func TestClient_Subscribe(t *testing.T) {
 			pairs:      []string{"BTC-USD"},
 			mockSocket: &MockSocket{},
 			expected: Message{
-				Type: "subscriptions",
+				Type: "match",
 				Time: time.Time{},
 			},
 		},
@@ -100,7 +100,6 @@ func TestClient_Subscribe(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			client := &client{
 				conn: tt.mockSocket,
-				lg:   logger.New(),
 			}
 
 			client.Subscribe(context.Background(), tt.pairs, channel, err)

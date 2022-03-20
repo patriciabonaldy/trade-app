@@ -1,6 +1,10 @@
 package coinbase
 
-import "time"
+import (
+	"time"
+
+	validation "github.com/go-ozzo/ozzo-validation/v4"
+)
 
 // Request struct represents a Ticker channel websocket request
 type Request struct {
@@ -25,6 +29,18 @@ type Message struct {
 	Side      string    `json:"side"`
 	Time      time.Time `json:"time"`
 	TradeID   int       `json:"trade_id"`
-	LastSize  string    `json:"last_size"`
+	Size      string    `json:"size"`
 	Message   string    `json:"message,omitempty"`
+}
+
+// Validate validates the closed struct.
+func (m *Message) Validate() error {
+	err := validation.ValidateStruct(m,
+		validation.Field(&m.Type, validation.Required),
+		validation.Field(&m.ProductID, validation.Required),
+		validation.Field(&m.Price, validation.Required),
+		validation.Field(&m.Size, validation.Required),
+	)
+
+	return err
 }

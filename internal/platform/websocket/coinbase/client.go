@@ -4,10 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"strings"
 
 	ws "github.com/gorilla/websocket"
 	"github.com/patriciabonaldy/zero/internal/platform/logger"
 	"github.com/patriciabonaldy/zero/internal/platform/websocket"
+)
+
+const (
+	typeSubscribe  = "subscribe"
+	channelMatches = "matches"
 )
 
 type socket interface {
@@ -19,7 +25,6 @@ type socket interface {
 type client struct {
 	// The websocket connection.
 	conn socket
-	lg   logger.Logger
 }
 
 // New function create a coinbase websocket client
@@ -33,20 +38,18 @@ func New(url string, lg logger.Logger) (websocket.Client, error) {
 
 	return &client{
 		conn: conn,
-		lg:   lg,
 	}, nil
 }
 
 func (c *client) Subscribe(ctx context.Context, tradingPairs []string, messages chan interface{}, err chan error) {
 	go func() {
 		request := Request{
-			Type:       "subscribe",
+			Type:       typeSubscribe,
 			ProductIds: tradingPairs,
-			Channels:   []string{"matches"},
+			Channels:   []string{channelMatches},
 		}
 		cErr := c.conn.WriteJSON(request)
 		if cErr != nil {
-			c.lg.Error(cErr.Error())
 			err <- cErr
 			return
 		}
@@ -56,7 +59,6 @@ func (c *client) Subscribe(ctx context.Context, tradingPairs []string, messages 
 			case <-ctx.Done():
 				cErr = c.conn.Close()
 				if cErr != nil {
-					c.lg.Errorf("error closing ws connection: %s", err)
 					err <- cErr
 					return
 				}
@@ -64,7 +66,6 @@ func (c *client) Subscribe(ctx context.Context, tradingPairs []string, messages 
 				var data []byte
 				_, data, cErr = c.conn.ReadMessage()
 				if cErr != nil {
-					c.lg.Errorf("error receiving message: %s", err)
 					err <- cErr
 					break
 				}
@@ -72,19 +73,19 @@ func (c *client) Subscribe(ctx context.Context, tradingPairs []string, messages 
 				var message Message
 				cErr = json.Unmarshal(data, &message)
 				if cErr != nil {
-					c.lg.Errorf("error receiving message: %s", err)
 					err <- cErr
 					break
 				}
 
 				if message.Type == "error" {
 					cErr = errors.New(message.Message)
-					c.lg.Errorf("error receiving message %s", cErr)
 					err <- cErr
 					break
 				}
 
-				messages <- message
+				if strings.Contains(message.Type, "match") {
+					messages <- message
+				}
 			}
 		}
 	}()
