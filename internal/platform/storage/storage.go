@@ -13,7 +13,7 @@ type Repository interface {
 	ReplaceData(ctx context.Context, code string, data []model.Data)
 	GetVwpa(ctx context.Context, code string) (model.VWpaData, error)
 	GetMapVWpa(ctx context.Context) ([]byte, error)
-	SaveVwpa(ctx context.Context, code string, data model.Data) 
+	SaveVwpa(ctx context.Context, code string, data model.Data)
 	UpdateVwpa(ctx context.Context, code string, data model.VWpaData)
 }
 

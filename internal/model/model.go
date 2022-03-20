@@ -11,6 +11,7 @@ const (
 	ETHBTCPair = "ETH-BTC"
 )
 
+// Header logo of company
 //go:embed header.txt
 var Header []byte
 

@@ -2,10 +2,11 @@ package internal
 
 import (
 	"context"
-	"github.com/patriciabonaldy/zero/internal/model"
-	"github.com/patriciabonaldy/zero/internal/platform/storage"
 	"testing"
 	"time"
+
+	"github.com/patriciabonaldy/zero/internal/model"
+	"github.com/patriciabonaldy/zero/internal/platform/storage"
 
 	"github.com/patriciabonaldy/zero/internal/platform/logger"
 	"github.com/patriciabonaldy/zero/internal/platform/storage/memory"
@@ -75,12 +76,12 @@ func Test_service_CalculateVwpa(t *testing.T) {
 			ctx := context.Background()
 			repo := tt.repository()
 			s := NewService(repo, client, lg, 2)
-			s.CalculateVwpa(ctx, tt.pairs)
+			s.Trading(ctx, tt.pairs)
 
 			if tt.wantErr {
 				err = <-s.ChErr
 				if (err != nil) != tt.wantErr {
-					t.Errorf("CalculateVwpa() error = %v, wantErr %v", err, tt.wantErr)
+					t.Errorf("Trading() error = %v, wantErr %v", err, tt.wantErr)
 					return
 				}
 				return

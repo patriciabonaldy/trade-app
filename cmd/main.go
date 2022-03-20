@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"log"
 
 	"github.com/patriciabonaldy/zero/cmd/bootstrap"

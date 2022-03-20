@@ -23,7 +23,7 @@ update-libs:
 .PHONY: ensure-deps
 ensure-deps:
 	@echo "=> Syncing dependencies with go mod tidy"
-	@go mod tidy
+	@go mod tidy -compat=1.17
 
 .PHONY: fmt
 fmt:

@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"context"
+
 	"github.com/patriciabonaldy/zero/config"
 	"github.com/patriciabonaldy/zero/internal"
 	"github.com/patriciabonaldy/zero/internal/model"
@@ -26,7 +27,7 @@ func Run() error {
 	ctx := context.Background()
 
 	config.Log.Info(string(model.Header))
-	s.CalculateVwpa(ctx, config.TradingPairs)
+	s.Trading(ctx, config.TradingPairs)
 
 	go func() {
 		for {

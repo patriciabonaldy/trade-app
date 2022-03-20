@@ -2,7 +2,6 @@ package internal
 
 import (
 	"context"
-	_ "embed"
 	"encoding/json"
 	"fmt"
 	"strconv"
@@ -14,7 +13,7 @@ import (
 	"github.com/patriciabonaldy/zero/internal/platform/websocket/coinbase"
 )
 
-// Service defines the contract for CalculateVwpa events.
+// Service defines the contract for Trading events.
 type Service struct {
 	repository storage.Repository
 	client     websocket.Client
@@ -36,7 +35,8 @@ func NewService(repository storage.Repository, client websocket.Client, lg logge
 	}
 }
 
-func (s *Service) CalculateVwpa(ctx context.Context, pairs []string) {
+// Trading method generate a VWPA for a list of coins pair
+func (s *Service) Trading(ctx context.Context, pairs []string) {
 	message := make(chan interface{})
 	cErr := make(chan error)
 

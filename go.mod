@@ -5,7 +5,6 @@ go 1.17
 require (
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/gorilla/websocket v1.5.0
-	github.com/sethvargo/go-envconfig v0.5.0
 	github.com/spf13/viper v1.10.1
 	github.com/stretchr/testify v1.7.1
 )

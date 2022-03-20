@@ -70,7 +70,7 @@ func TestMemory_GetVwpa(t *testing.T) {
 			want: model.VWpaData{
 				Price: 10,
 				Size:  5,
-				Vwpa:  2,
+				Vwpa:  10,
 			},
 		},
 	}
@@ -110,7 +110,7 @@ func TestMemory_SaveVwpa(t *testing.T) {
 	expected := model.VWpaData{
 		Price: 20,
 		Size:  10,
-		Vwpa:  2,
+		Vwpa:  20,
 	}
 	assert.Equal(t, expected, got)
 }
