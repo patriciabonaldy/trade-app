@@ -162,7 +162,7 @@ func (s *Service) showResult(result []byte) error {
 	}
 
 	for k, v := range data {
-		s.lg.Info("coins pair %s  VWPA: %v\n", k, v.Vwpa)
+		s.lg.Infof("coins pair %s  VWPA: %v\n", k, v.Vwpa)
 	}
 
 	return nil

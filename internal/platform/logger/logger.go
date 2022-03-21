@@ -10,6 +10,7 @@ type Logger interface {
 	Error(args ...interface{})
 	Errorf(format string, args ...interface{})
 	Info(args ...interface{})
+	Infof(format string, args ...interface{})
 }
 
 type lg struct {
@@ -32,4 +33,8 @@ func (l lg) Errorf(format string, args ...interface{}) {
 
 func (l lg) Info(args ...interface{}) {
 	l.logger.Println(args...)
+}
+
+func (l lg) Infof(format string, args ...interface{}) {
+	l.logger.Printf(format, args...)
 }
