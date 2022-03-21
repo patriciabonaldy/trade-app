@@ -54,3 +54,6 @@ coverage:
 
 .PHONY: test-cover
 test-cover: service-up coverage service-down
+
+run:
+	@go run cmd/main.go
