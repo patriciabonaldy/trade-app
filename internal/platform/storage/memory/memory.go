@@ -89,14 +89,14 @@ func (m *Memory) SaveVwpa(ctx context.Context, code string, data model.Data) {
 	m.mux.Lock()
 	wpa, ok := m.VwpaData[code]
 	if ok {
-		wpa.Price += data.Price
+		wpa.PQ += data.Price * data.Size
 		wpa.Size += data.Size
 		wpa.CalculateVwpa()
 		m.VwpaData[code] = wpa
 	} else {
 		wpa = model.VWpaData{
-			Price: data.Price,
-			Size:  data.Size,
+			PQ:   data.Price * data.Size,
+			Size: data.Size,
 		}
 		wpa.CalculateVwpa()
 

@@ -34,7 +34,7 @@ func New(url string, lg logger.Logger) (websocket.Client, error) {
 		return nil, err
 	}
 
-	lg.Info("connected to coinbase websocket, url: %s", url)
+	lg.Infof("connected to coinbase websocket, url: %s", url)
 
 	return &client{
 		conn: conn,

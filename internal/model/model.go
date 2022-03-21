@@ -21,14 +21,14 @@ type Data struct {
 	Size  float64
 }
 
-// VWpaData store Volume Weighted Average Price
+// VWpaData store Volume Weighted Average PQ
 type VWpaData struct {
-	Price float64
-	Size  float64
-	Vwpa  float64
+	PQ   float64
+	Size float64
+	Vwpa float64
 }
 
 // CalculateVwpa method to get vwpa
 func (d *VWpaData) CalculateVwpa() {
-	d.Vwpa = (d.Price * d.Size) / d.Size
+	d.Vwpa = d.PQ / d.Size
 }

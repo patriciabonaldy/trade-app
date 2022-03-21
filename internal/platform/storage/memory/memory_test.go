@@ -5,9 +5,10 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/patriciabonaldy/zero/internal/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/patriciabonaldy/zero/internal/model"
 )
 
 func TestMemory_GetData(t *testing.T) {
@@ -68,9 +69,9 @@ func TestMemory_GetVwpa(t *testing.T) {
 			name: "Found",
 			code: "BTC-USD",
 			want: model.VWpaData{
-				Price: 10,
-				Size:  5,
-				Vwpa:  10,
+				PQ:   50,
+				Size: 5,
+				Vwpa: 10,
 			},
 		},
 	}
@@ -108,9 +109,9 @@ func TestMemory_SaveVwpa(t *testing.T) {
 	require.NoError(t, err)
 
 	expected := model.VWpaData{
-		Price: 20,
-		Size:  10,
-		Vwpa:  20,
+		PQ:   100,
+		Size: 10,
+		Vwpa: 10,
 	}
 	assert.Equal(t, expected, got)
 }

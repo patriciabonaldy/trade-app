@@ -1,10 +1,11 @@
-package internal
+package trading
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/patriciabonaldy/zero/internal/model"
 	"github.com/patriciabonaldy/zero/internal/platform/logger"
@@ -104,7 +105,7 @@ func (s *Service) checkMaxSize(ctx context.Context, m coinbase.Message) error {
 		}
 
 		dataVwpa.Size -= data[0].Size
-		dataVwpa.Price -= data[0].Price
+		dataVwpa.PQ -= data[0].Price
 		dataVwpa.CalculateVwpa()
 
 		data = data[1:]
@@ -161,9 +162,12 @@ func (s *Service) showResult(result []byte) error {
 		return err
 	}
 
+	s.lg.Flush()
 	for k, v := range data {
-		s.lg.Infof("coins pair %s  VWPA: %v\n", k, v.Vwpa)
+		s.lg.Infof("coins pair %s  VWAP: %v\n", k, v.Vwpa)
 	}
+	const timeSleep = 3
+	time.Sleep(timeSleep * time.Second)
 
 	return nil
 }

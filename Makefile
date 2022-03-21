@@ -12,7 +12,7 @@ all: check_tools ensure-deps fmt imports linter test
 
 .PHONY: check_tools
 check_tools:
-	@type "golangci-lint" > /dev/null 2>&1 || echo 'Please install golangci-lint: https://golangci-lint.run/usage/install/#local-installation'
+	@type "golangci-lint" > /dev/null 2>&1 || echo 'Please install golangci-lint. : https://golangci-lint.run/usage/install/#local-installation'
 	@type "goimports" > /dev/null 2>&1 || echo 'Please install goimports: go get golang.org/x/tools/cmd/goimports'
 
 .PHONY: update-libs
@@ -55,5 +55,11 @@ coverage:
 .PHONY: test-cover
 test-cover: service-up coverage service-down
 
+build:
+	@echo "==> Building..."
+	go build -o ./$(APP_NAME) ./cmd
+
+setup: all build
+
 run:
-	@go run cmd/main.go
+	@./zero

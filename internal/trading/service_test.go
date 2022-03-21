@@ -1,4 +1,4 @@
-package internal
+package trading
 
 import (
 	"context"
@@ -6,15 +6,16 @@ import (
 	"time"
 
 	"github.com/patriciabonaldy/zero/internal/model"
-	"github.com/patriciabonaldy/zero/internal/platform/storage"
+
+	"github.com/stretchr/testify/require"
 
 	"github.com/patriciabonaldy/zero/internal/platform/logger"
+	"github.com/patriciabonaldy/zero/internal/platform/storage"
 	"github.com/patriciabonaldy/zero/internal/platform/storage/memory"
 	"github.com/patriciabonaldy/zero/internal/platform/websocket/coinbase"
-	"github.com/stretchr/testify/require"
 )
 
-func Test_service_CalculateVwpa(t *testing.T) {
+func Test_service_Trading(t *testing.T) {
 	tests := []struct {
 		name       string
 		pairs      []string

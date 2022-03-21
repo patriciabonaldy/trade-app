@@ -4,10 +4,10 @@ import (
 	"context"
 
 	"github.com/patriciabonaldy/zero/config"
-	"github.com/patriciabonaldy/zero/internal"
-	"github.com/patriciabonaldy/zero/internal/model"
+	"github.com/patriciabonaldy/zero/internal/platform/server"
 	"github.com/patriciabonaldy/zero/internal/platform/storage/memory"
 	"github.com/patriciabonaldy/zero/internal/platform/websocket/coinbase"
+	"github.com/patriciabonaldy/zero/internal/trading"
 )
 
 // Run application
@@ -17,24 +17,16 @@ func Run() error {
 		return err
 	}
 
-	client, err := coinbase.New(config.ExchangeURL, config.Log)
+	client, err := coinbase.New(config.BrokerURL, config.Log)
 	if err != nil {
 		return err
 	}
 
 	repo := memory.NewRepository()
-	s := internal.NewService(repo, client, config.Log, config.MaxSize)
-	ctx := context.Background()
+	s := trading.NewService(repo, client, config.Log, config.MaxSize)
 
-	config.Log.Info(string(model.Header))
-	s.Trading(ctx, config.TradingPairs)
+	server := server.New(s)
+	server.Run(context.Background(), config)
 
-	go func() {
-		for {
-			<-s.ChErr
-		}
-	}()
-
-	<-ctx.Done()
 	return nil
 }

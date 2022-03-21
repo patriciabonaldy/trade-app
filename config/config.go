@@ -7,16 +7,16 @@ import (
 	"os"
 	"strings"
 
-	"github.com/patriciabonaldy/zero/internal/platform/logger"
-
 	"github.com/spf13/viper"
+
+	"github.com/patriciabonaldy/zero/internal/platform/logger"
 )
 
 // Config is the struct we use to configure the binaries
 type Config struct {
 	// Clients
 	TradingPairs []string `mapstructure:"TRADING_PAIR"`
-	ExchangeURL  string   `mapstructure:"EXCHANGE_URL"`
+	BrokerURL    string   `mapstructure:"BROKER_URL"`
 	MaxSize      int      `mapstructure:"MAX_SIZE"`
 	Log          logger.Logger
 }
