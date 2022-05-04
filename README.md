@@ -9,7 +9,6 @@ In this app you'll get all the information without the noise that occurs through
 Zero app uses a client WebSocket to connect to coinbase, you can set up the pair coins that you want to trade, also the number of data points
 
 
-![app](doc/app.png)
 
 
 
